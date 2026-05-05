@@ -1,10 +1,10 @@
+import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:pds_2/chopper/client/chopper_client.dart';
 import 'package:pds_2/core/configs/routes.dart';
-import 'package:pds_2/core/network/http/rest_client.dart';
-import 'package:pds_2/core/network/http/rest_client_impl.dart';
+import 'package:pds_2/core/globals/keys.dart';
 import 'package:pds_2/core/services/service_initalizer.dart';
 import 'package:pds_2/core/services/service_locator.dart';
 import 'package:pds_2/hive/constants/hive_boxes.dart';
@@ -34,12 +34,10 @@ Future<void> main() async {
   HydratedBloc.storage = HydratedLocalStorage(hydratedBox);
 
   // Initialize HTTP client
-  serviceLocator.registerFactory<RestClient>(() => IRestClient());
+  serviceLocator.registerSingleton<ChopperClient>(chopperClient);
 
   // Initialize all dependencies
   serviceInitializer();
-
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const PDSWidget());
 }
 
@@ -55,6 +53,7 @@ class _PDSWidgetState extends State<PDSWidget> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
+      scaffoldMessengerKey: scaffoldState,
       theme: ThemeData(
         appBarTheme: const AppBarThemeData(backgroundColor: Colors.white),
         colorScheme: ColorScheme.light(

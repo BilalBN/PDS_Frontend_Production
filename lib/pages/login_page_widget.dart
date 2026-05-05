@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pds_2/features/auth/bloc/user_login_cubit/user_login_cubit.dart';
 import 'package:pds_2/features/auth/presentation/widgets/forms/login_form_widget.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
+import 'package:pds_2/shared/helpers/flutter_helpers.dart';
 
 class LoginPageWidget extends StatelessWidget {
   const LoginPageWidget({super.key});
@@ -16,8 +17,15 @@ class LoginPageWidget extends StatelessWidget {
           BlocListener<UserLoginCubit, UserLoginState>(
             listener: (context, state) {
               if (state is UserLoginSuccess) {
-                GoRouter.of(context).go(NavRoutes.mainPage);
-              } else if (state is UserLoginException) {}
+                FlutterHelpers.showSnackBar(
+                  Colors.green,
+                  const Text('Login successful'),
+                  onSnackbarClosed: () =>
+                      GoRouter.of(context).go(NavRoutes.mainPage),
+                );
+              } else if (state is UserLoginException) {
+                FlutterHelpers.showSnackBar(Colors.red, Text(state.exception));
+              }
             },
           ),
         ],

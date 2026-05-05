@@ -46,31 +46,31 @@ class _MainPageWidgetState extends State<MainPageWidget>
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            spacing: 10.0,
-            children: [
-              const Row(
+        child: Column(
+          spacing: 10.0,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
+              child: Row(
                 spacing: 10.0,
                 children: [
                   Expanded(child: SearchBatchTextFormFieldWidget()),
                   FilterBatchesButtonWidget(),
                 ],
               ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: const [
-                    BatchesGridViewWidget(),
-                    Text('data'),
-                    Text('data'),
-                  ],
-                ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
+                  BatchesGridViewWidget(),
+                  Text('data'),
+                  Text('data'),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

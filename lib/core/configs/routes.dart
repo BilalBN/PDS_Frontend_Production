@@ -7,6 +7,8 @@ import 'package:pds_2/features/auth/bloc/user_login_cubit/user_login_cubit.dart'
 import 'package:pds_2/features/auth/data/repository/auth_repository.dart';
 import 'package:pds_2/features/auth/presentation/providers/auth_controllers_provider.dart';
 import 'package:pds_2/pages/account_page_widget.dart';
+import 'package:pds_2/pages/batch_main_steps_page_widget.dart';
+import 'package:pds_2/pages/batch_sub_steps_page_widget.dart';
 import 'package:pds_2/pages/login_page_widget.dart';
 import 'package:pds_2/pages/main_page_widget.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
@@ -26,6 +28,14 @@ GoRouter _router = GoRouter(
         ],
         child: const AccountPageWidget(),
       ),
+    ),
+    GoRoute(
+      path: NavRoutes.batchMainStepsPage,
+      builder: (context, state) => const BatchMainStepsPageWidget(),
+    ),
+    GoRoute(
+      path: NavRoutes.batchSubStepsPage,
+      builder: (context, state) => const BatchSubStepsPageWidget(),
     ),
     GoRoute(
       path: NavRoutes.loginPage,

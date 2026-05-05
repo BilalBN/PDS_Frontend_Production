@@ -1,5 +1,6 @@
+import 'package:chopper/chopper.dart';
 import 'package:hive_ce/hive_ce.dart';
-import 'package:pds_2/core/network/http/rest_client.dart';
+import 'package:pds_2/chopper/chopper_auth_service.dart';
 import 'package:pds_2/core/services/service_locator.dart';
 import 'package:pds_2/features/auth/data/repository/auth_repository.dart';
 import 'package:pds_2/features/auth/data/sources/local/save_user_data_service.dart';
@@ -11,7 +12,9 @@ import 'package:pds_2/shared/local_storage/local_storage.dart';
 
 void authServices() {
   serviceLocator.registerFactory<LoginService>(
-    () => LoginWithUsernameService(serviceLocator<RestClient>()),
+    () => LoginWithUsernameService(
+      serviceLocator<ChopperClient>().getService<ChopperAuthService>(),
+    ),
   );
   serviceLocator.registerFactory(
     () => SaveUserDataService(Hive.box(HiveBoxes.pdsUser)),
