@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pds_2/core/extensions/build_context_extensions.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
 import 'package:pds_2/shared/widgets/icons/primary_icon_widget.dart';
 import 'package:pds_2/shared/widgets/texts/primary_text_widget.dart';
@@ -11,7 +12,7 @@ class BatchesGridViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MasonryGridView.count(
-      crossAxisCount: 1,
+      crossAxisCount: context.isTablet ? 2 : 1,
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 10.0,
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
@@ -34,19 +35,25 @@ class BatchesGridViewWidget extends StatelessWidget {
               spacing: 10.0,
               children: [
                 // Batch ID
-                const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 10.0,
-                  children: [
-                    Text(
-                      'Batch ID:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    PrimaryTextWidget(
-                      '1001',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                const Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 10.0,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          'Batch ID:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Flexible(
+                        child: PrimaryTextWidget(
+                          '1001',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 // Product
                 Row(
@@ -75,27 +82,33 @@ class BatchesGridViewWidget extends StatelessWidget {
                   ],
                 ),
                 // Progress
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 10.0,
-                  children: [
-                    const Text(
-                      'Progress',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Flexible(
-                      child: LinearProgressIndicator(
-                        backgroundColor: Colors.grey[300]!,
-                        borderRadius: BorderRadius.circular(10.0),
-                        minHeight: 5.0,
-                        value: 0.5,
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 10.0,
+                    children: [
+                      const Flexible(
+                        child: Text(
+                          'Progress',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    const Text(
-                      '3/9 Steps',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                      Flexible(
+                        child: LinearProgressIndicator(
+                          backgroundColor: Colors.grey[300]!,
+                          borderRadius: BorderRadius.circular(10.0),
+                          minHeight: 5.0,
+                          value: 0.5,
+                        ),
+                      ),
+                      const Flexible(
+                        child: Text(
+                          '3/9 Steps',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

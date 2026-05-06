@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pds_2/features/account/bloc/cubit/get_account_cubit.dart';
+import 'package:pds_2/shared/widgets/primary_circular_progress_indicator_widget.dart';
 import 'package:pds_2/shared/widgets/texts/nullable_text_widget.dart';
 
 class AccountBlocBuilderWidget extends StatelessWidget {
@@ -13,7 +14,9 @@ class AccountBlocBuilderWidget extends StatelessWidget {
         switch (state) {
           case GetAccountInitial():
           case GetAccountInProgress():
-            return const Center(child: CupertinoActivityIndicator());
+            return const Center(
+              child: PrimaryCircularProgressIndicatorWidget(),
+            );
           case GetAccountSuccess():
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

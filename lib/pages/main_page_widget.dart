@@ -65,8 +65,8 @@ class _MainPageWidgetState extends State<MainPageWidget>
                 physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   BatchesGridViewWidget(),
-                  Text('data'),
-                  Text('data'),
+                  BatchesGridViewWidget(),
+                  BatchesGridViewWidget(),
                 ],
               ),
             ),

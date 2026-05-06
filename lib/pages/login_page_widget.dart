@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pds_2/core/extensions/build_context_extensions.dart';
 import 'package:pds_2/features/auth/bloc/user_login_cubit/user_login_cubit.dart';
 import 'package:pds_2/features/auth/presentation/widgets/forms/login_form_widget.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
@@ -36,21 +37,24 @@ class LoginPageWidget extends StatelessWidget {
               builder: (context, cons) {
                 return Center(
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 10.0,
-                      children: [
-                        Text(
-                          'PDS Operator Login',
-                          style: TextStyle(
-                            fontSize: cons.maxWidth / 15,
-                            fontWeight: FontWeight.bold,
+                    child: SizedBox(
+                      width: context.isTablet ? context.getWidth / 1.5 : null,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 10.0,
+                        children: [
+                          Text(
+                            'PDS Operator Login',
+                            style: TextStyle(
+                              fontSize: cons.maxWidth / 15,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const Text('Login to access manufacturing workflow'),
-                        LoginFormWidget(maxWidth: cons.maxWidth),
-                      ],
+                          const Text('Login to access manufacturing workflow'),
+                          LoginFormWidget(maxWidth: cons.maxWidth),
+                        ],
+                      ),
                     ),
                   ),
                 );
