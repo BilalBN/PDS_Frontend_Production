@@ -68,6 +68,7 @@ dependencies:
   json_annotation: ^4.11.0
   meta: ^1.17.0
   mqtt5_client: ^4.17.1
+  intl: any
 
 dev_dependencies:
   flutter_test:

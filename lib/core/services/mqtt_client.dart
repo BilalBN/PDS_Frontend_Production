@@ -5,6 +5,8 @@ MqttServerClient _mqttClient = MqttServerClient.withPort(
   Env.mqttHost,
   'flutter_pds',
   int.parse(Env.mqttPort),
-);
+)
+..autoReconnect = true
+..keepAlivePeriod = 10;
 
 MqttServerClient get mqttClient => _mqttClient;

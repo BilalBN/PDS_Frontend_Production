@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pds_2/core/extensions/build_context_extensions.dart';
+import 'package:pds_2/features/batch/models/batch_model.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
+import 'package:pds_2/shared/helpers/data_time_helpers.dart';
 import 'package:pds_2/shared/widgets/icons/primary_icon_widget.dart';
 import 'package:pds_2/shared/widgets/texts/primary_text_widget.dart';
 
 class BatchesGridViewWidget extends StatelessWidget {
-  const BatchesGridViewWidget({super.key});
+  final List<BatchModel> batches;
+  const BatchesGridViewWidget({super.key, required this.batches});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +20,8 @@ class BatchesGridViewWidget extends StatelessWidget {
       mainAxisSpacing: 10.0,
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       itemBuilder: (context, index) {
+        final batch = batches[index];
+        final startDate = formatDate(batch.startDate!);
         return InkWell(
           onTap: () {
             GoRouter.of(context).push(NavRoutes.batchMainStepsPage);
@@ -35,12 +40,12 @@ class BatchesGridViewWidget extends StatelessWidget {
               spacing: 10.0,
               children: [
                 // Batch ID
-                const Flexible(
+                 Flexible(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     spacing: 10.0,
                     children: [
-                      Flexible(
+                      const Flexible(
                         child: Text(
                           'Batch ID:',
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -48,8 +53,8 @@ class BatchesGridViewWidget extends StatelessWidget {
                       ),
                       Flexible(
                         child: PrimaryTextWidget(
-                          '1001',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          batch.id.toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -67,12 +72,12 @@ class BatchesGridViewWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         spacing: 5.0,
                         children: [
-                          const Text(
-                            'Senna 20 % UV',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Text(
+                            batch.product!.name.toString(),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Started ${DateTime.now()}',
+                            'Started $startDate',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -115,7 +120,7 @@ class BatchesGridViewWidget extends StatelessWidget {
           ),
         );
       },
-      itemCount: 15,
+      itemCount: batches.length,
     );
   }
 }

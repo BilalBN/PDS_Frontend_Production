@@ -30,6 +30,12 @@ Future<void> main() async {
     storageDirectory: HydratedStorageDirectory(tempDir.path),
   );
 
+  // Initialize Network clients
+  serviceLocator.registerSingleton<ChopperClient>(chopperClient);
+  serviceLocator.registerSingleton<MqttServerClient>(mqttClient);
+  // Initialize all dependencies
+  serviceInitializer();
+
   runApp(const PDSWidget());
 }
 
@@ -41,16 +47,6 @@ class PDSWidget extends StatefulWidget {
 }
 
 class _PDSWidgetState extends State<PDSWidget> {
-  @override
-  void initState() {
-    super.initState();
-    // Initialize Network clients client
-    serviceLocator.registerSingleton<ChopperClient>(chopperClient);
-    serviceLocator.registerSingleton<MqttServerClient>(mqttClient);
-    // Initialize all dependencies
-    serviceInitializer();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

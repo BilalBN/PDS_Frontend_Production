@@ -1,5 +1,9 @@
-abstract class ListenBatchesService {
-  Stream onBatchCreated();
+import 'package:pds_2/features/batch/models/batch_model.dart';
 
-  Stream<int> onBatchDeleted();
+abstract class ListenBatchesService {
+  Stream<BatchModel> get onBatchCreated;
+
+  Stream<int> get onBatchDeleted;
+
+  void close();
 }

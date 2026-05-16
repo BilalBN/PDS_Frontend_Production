@@ -6,6 +6,10 @@ import 'package:pds_2/features/account/data/repository/account_repository.dart';
 import 'package:pds_2/features/auth/bloc/user_login_cubit/user_login_cubit.dart';
 import 'package:pds_2/features/auth/data/repository/auth_repository.dart';
 import 'package:pds_2/features/auth/presentation/providers/auth_controllers_provider.dart';
+import 'package:pds_2/features/batch/bloc/listen_active_batches_bloc/listen_active_batches_bloc.dart';
+import 'package:pds_2/features/batch/bloc/listen_delete_batches_bloc/listen_delete_batches_bloc.dart';
+import 'package:pds_2/features/batch/data/repository/batch_realtime_repository.dart';
+import 'package:pds_2/features/batch/presentation/providers/batches_provider.dart';
 import 'package:pds_2/pages/account_page_widget.dart';
 import 'package:pds_2/pages/batch_main_steps_page_widget.dart';
 import 'package:pds_2/pages/batch_sub_steps_page_widget.dart';
@@ -67,7 +71,22 @@ GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: NavRoutes.mainPage,
-      builder: (context, state) => const MainPageWidget(),
+      builder: (context, state) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => BatchesProvider()),
+          BlocProvider(
+            create: (context) => ListenActiveBatchesBloc(
+              serviceLocator<BatchRealtimeRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ListenDeleteBatchesBloc(
+              serviceLocator<BatchRealtimeRepository>(),
+            ),
+          ),
+        ],
+        child: const MainPageWidget(),
+      ),
     ),
   ],
 );

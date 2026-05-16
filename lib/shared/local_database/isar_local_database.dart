@@ -8,7 +8,11 @@ class IsarLocalDatabase implements LocalDatabase {
   IsarLocalDatabase(this._isar);
 
   @override
-  Future<void> clear() async => await _isar.clear();
+  Future<void> clear() async {
+    await _isar.writeTxn(() async {
+      await _isar.clear();
+    });
+  }
 
   @override
   Future<void> close() async => await _isar.close();
