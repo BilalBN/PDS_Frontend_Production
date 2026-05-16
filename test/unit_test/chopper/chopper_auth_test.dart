@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:chopper/chopper.dart';
+import 'package:http/io_client.dart' as http;
 import 'package:pds_2/chopper/chopper_auth_service.dart';
 import 'package:pds_2/env/env.dart';
 import 'package:test/test.dart';
@@ -8,6 +11,9 @@ void main() {
 
   setUpAll(() {
     final httpClient = ChopperClient(
+      client: http.IOClient(
+        HttpClient()..connectionTimeout = const Duration(seconds: 5),
+      ),
       baseUrl: Uri.parse(Env.baseUrl),
       converter: const JsonConverter(),
       errorConverter: const JsonConverter(),

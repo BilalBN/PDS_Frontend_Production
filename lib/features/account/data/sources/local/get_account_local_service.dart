@@ -1,12 +1,11 @@
-import 'package:hive_ce/hive_ce.dart';
-import 'package:pds_2/hive/models/user_type.dart';
+import 'package:pds_2/shared/local_database/local_database.dart';
 
 class GetAccountLocalService {
-  final Box<UserType> _box;
+  final LocalDatabase _localDatabase;
 
-  GetAccountLocalService(this._box);
+  GetAccountLocalService(this._localDatabase);
 
-  UserType? getAccount() {
-    return _box.get('user');
+  Future<Map<String, dynamic>?> getAccount() async {
+    return await _localDatabase.getUser();
   }
 }

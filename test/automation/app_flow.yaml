@@ -1,0 +1,9 @@
+appId: com.example.pds_2
+---
+- clearState
+- launchApp
+- runFlow: login_flow.yaml
+- extendedWaitUntil: 
+    visible: "Batches"
+    timeout: 10000
+- stopApp

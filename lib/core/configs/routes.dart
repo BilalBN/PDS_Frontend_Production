@@ -12,10 +12,23 @@ import 'package:pds_2/pages/batch_sub_steps_page_widget.dart';
 import 'package:pds_2/pages/login_page_widget.dart';
 import 'package:pds_2/pages/main_page_widget.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
+import 'package:pds_2/shared/local_database/local_database.dart';
 import 'package:provider/provider.dart';
 
 GoRouter _router = GoRouter(
-  initialLocation: NavRoutes.mainPage,
+  initialLocation: NavRoutes.loginPage,
+  redirect: (context, state) {
+    final currentRoute = state.uri.path;
+    final publicRoutes = {NavRoutes.loginPage};
+    bool isUserLoggedIn = serviceLocator<LocalDatabase>().isUserLoggedIn();
+
+    if (!isUserLoggedIn && !publicRoutes.contains(currentRoute)) {
+      return NavRoutes.loginPage;
+    } else if (isUserLoggedIn && publicRoutes.contains(currentRoute)) {
+      return NavRoutes.mainPage;
+    }
+    return null;
+  },
   routes: [
     GoRoute(
       path: NavRoutes.accountPage,

@@ -1,43 +1,35 @@
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:isar_community/isar.dart';
+import 'package:mqtt5_client/mqtt5_server_client.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pds_2/chopper/client/chopper_client.dart';
 import 'package:pds_2/core/configs/routes.dart';
 import 'package:pds_2/core/globals/keys.dart';
-import 'package:pds_2/core/services/service_initalizer.dart';
+import 'package:pds_2/core/services/mqtt_client.dart';
+import 'package:pds_2/core/services/service_initializer.dart';
 import 'package:pds_2/core/services/service_locator.dart';
-import 'package:pds_2/hive/constants/hive_boxes.dart';
-import 'package:pds_2/hive/hive_registrar.g.dart';
-import 'package:pds_2/hive/models/user_type.dart';
-import 'package:pds_2/shared/local_storage/hive_local_storage.dart';
-import 'package:pds_2/shared/local_storage/hydrated_local_storage.dart';
-import 'package:pds_2/shared/local_storage/local_storage.dart';
+import 'package:pds_2/isar/collections/isar_user_collection.dart';
+import 'package:pds_2/shared/local_database/isar_local_database.dart';
+import 'package:pds_2/shared/local_database/local_database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive
-  await Hive.initFlutter();
-  Hive.registerAdapters();
-
-  // Open required boxes
-  await Future.wait([
-    Hive.openBox(HiveBoxes.pds),
-    Hive.openBox<UserType>(HiveBoxes.pdsUser),
-  ]);
-  final hiveBox = Hive.box('PDS');
-  serviceLocator.registerSingleton<LocalStorage>(HiveLocalStorage(hiveBox));
+  // Initialize isar
+  final docDir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open([
+    IsarUserCollectionSchema,
+  ], directory: docDir.path);
+  serviceLocator.registerSingleton<LocalDatabase>(IsarLocalDatabase(isar));
 
   // Initialize Hydrated Bloc
-  final hydratedBox = await Hive.openBox(HiveBoxes.pdsHydrated);
-  HydratedBloc.storage = HydratedLocalStorage(hydratedBox);
+  final tempDir = await getTemporaryDirectory();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(tempDir.path),
+  );
 
-  // Initialize HTTP client
-  serviceLocator.registerSingleton<ChopperClient>(chopperClient);
-
-  // Initialize all dependencies
-  serviceInitializer();
   runApp(const PDSWidget());
 }
 
@@ -49,6 +41,16 @@ class PDSWidget extends StatefulWidget {
 }
 
 class _PDSWidgetState extends State<PDSWidget> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize Network clients client
+    serviceLocator.registerSingleton<ChopperClient>(chopperClient);
+    serviceLocator.registerSingleton<MqttServerClient>(mqttClient);
+    // Initialize all dependencies
+    serviceInitializer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

@@ -6,7 +6,7 @@ import 'package:pds_2/chopper/chopper_auth_service.dart';
 import 'package:pds_2/chopper/interceptors/access_token_interceptor.dart';
 import 'package:pds_2/core/services/service_locator.dart';
 import 'package:pds_2/env/env.dart';
-import 'package:pds_2/shared/local_storage/local_storage.dart';
+import 'package:pds_2/shared/local_database/local_database.dart';
 
 final chopperClient = ChopperClient(
   baseUrl: Uri.parse(Env.baseUrl),
@@ -15,6 +15,8 @@ final chopperClient = ChopperClient(
   ),
   converter: const JsonConverter(),
   errorConverter: const JsonConverter(),
-  interceptors: [AccessTokenInterceptor(serviceLocator<LocalStorage>())],
+  interceptors: [
+    AccessTokenInterceptor(serviceLocator<LocalDatabase>().getUserToken()),
+  ],
   services: [ChopperAuthService.create()],
 );

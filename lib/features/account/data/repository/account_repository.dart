@@ -8,9 +8,9 @@ class AccountRepository {
   AccountRepository(this._getAccountLocalService);
 
   Future<Either<String, AccountModel>> getAccount() async {
-    final account = _getAccountLocalService.getAccount();
+    final account = await _getAccountLocalService.getAccount();
     if (account != null) {
-      final accountType = AccountModel.fromJson(account.toJson());
+      final accountType = AccountModel.fromJson(account);
       return Right(accountType);
     }
 

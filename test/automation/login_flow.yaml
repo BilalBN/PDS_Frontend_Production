@@ -1,0 +1,7 @@
+appId: com.example.pds_2
+---
+- tapOn:  "Enter username"
+- inputText: "user_name"
+- tapOn: "Enter password"
+- inputText: "password"
+- tapOn: "Login"
