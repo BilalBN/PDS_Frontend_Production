@@ -12,7 +12,4 @@ class Env {
 
   @EnviedField(obfuscate: true, varName: 'MQTT_PORT')
   static final String mqttPort = _Env.mqttPort;
-
-  @EnviedField(varName: 'LOGIN')
-  static const String login = _Env.login;
 }
