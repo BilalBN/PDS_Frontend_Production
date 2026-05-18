@@ -11,8 +11,20 @@ class BatchesProvider with ChangeNotifier {
   }
 
   void removeBatch(int batchId) {
-    if(_activeBatches.isEmpty) return;
+    if (_activeBatches.isEmpty) return;
     _activeBatches.removeWhere((batch) => batch.id == batchId);
     notifyListeners();
+  }
+
+  void replaceBatches(List<BatchModel> batches) {
+    _activeBatches.clear();
+    _activeBatches.addAll(batches);
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _activeBatches.clear();
+    super.dispose();
   }
 }

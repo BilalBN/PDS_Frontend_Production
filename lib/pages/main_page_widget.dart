@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pds_2/features/account/presentation/buttons/go_to_account_page_button_widget.dart';
+import 'package:pds_2/features/batch/bloc/get_batches_cubit/get_batches_cubit.dart';
 import 'package:pds_2/features/batch/bloc/listen_active_batches_bloc/listen_active_batches_bloc.dart';
 import 'package:pds_2/features/batch/bloc/listen_delete_batches_bloc/listen_delete_batches_bloc.dart';
 import 'package:pds_2/features/batch/presentation/providers/batches_provider.dart';
@@ -27,7 +28,12 @@ class _MainPageWidgetState extends State<MainPageWidget>
     const tabs = ['Active', 'Supervised', 'Completed'];
     _tabs = tabs.map((tab) => Tab(text: tab)).toList();
     _tabController = TabController(length: _tabs.length, vsync: this);
+    _getBatches();
     _listenRealtimeActiveBatches();
+  }
+
+  void _getBatches() {
+    BlocProvider.of<GetBatchesCubit>(context).getBatches('active');
   }
 
   void _listenRealtimeActiveBatches() {
@@ -43,6 +49,16 @@ class _MainPageWidgetState extends State<MainPageWidget>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<GetBatchesCubit, GetBatchesState>(
+          listener: (context, state) {
+            if (state is GetBatchesSuccess) {
+              Provider.of<BatchesProvider>(
+                context,
+                listen: false,
+              ).replaceBatches(state.batches);
+            }
+          },
+        ),
         BlocListener<ListenActiveBatchesBloc, ListenActiveBatchesState>(
           listener: (context, state) {
             if (state is ActiveBatchReturned) {

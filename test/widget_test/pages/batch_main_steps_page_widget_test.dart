@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pds_2/features/batch/presentation/widgets/list_views/batch_steps_list_view_widget.dart';
+import 'package:pds_2/features/steps/presentation/widgets/list_views/batch_steps_list_view_widget.dart';
 import 'package:pds_2/pages/batch_main_steps_page_widget.dart';
 
 import '../../helpers/test_helpers.dart';
@@ -12,7 +12,7 @@ void main() {
     ) async {
       await tester.binding.setSurfaceSize(largeScreenSize);
       await tester.pumpWidget(
-        const MaterialApp(home: BatchMainStepsPageWidget()),
+        const MaterialApp(home: BatchMainStepsPageWidget(productId: 1)),
       );
 
       // Find widgets
@@ -26,7 +26,7 @@ void main() {
     ) async {
       await tester.binding.setSurfaceSize(smallScreenSize);
       await tester.pumpWidget(
-        const MaterialApp(home: BatchMainStepsPageWidget()),
+        const MaterialApp(home: BatchMainStepsPageWidget(productId: 1)),
       );
 
       // Find widgets

@@ -9,7 +9,11 @@ class AccessTokenInterceptor implements Interceptor {
 
   @override
   FutureOr<Response<BodyType>> intercept<BodyType>(Chain<BodyType> chain) {
-    final request = applyHeader(chain.request, 'auth_token', 'Bearer $_token');
+    final request = applyHeader(
+      chain.request,
+      'Authorization',
+      'Bearer $_token',
+    );
     return chain.proceed(request);
   }
 }

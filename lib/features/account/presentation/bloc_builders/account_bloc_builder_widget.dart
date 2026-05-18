@@ -22,10 +22,50 @@ class AccountBlocBuilderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(state.account.id.toString()),
-                NullableTextWidget(state.account.email),
-                NullableTextWidget(state.account.phone),
-                Text(state.account.userName.toString()),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 10.0,
+                  children: [
+                    const Text(
+                      'ID',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(state.account.id.toString()),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 10.0,
+                  children: [
+                    const Text(
+                      'Email',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    NullableTextWidget(state.account.email),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 10.0,
+                  children: [
+                    const Text(
+                      'Phone',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    NullableTextWidget(state.account.phone),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 10.0,
+                  children: [
+                    const Text(
+                      'Username',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(state.account.userName.toString()),
+                  ],
+                ),
               ],
             );
           case GetAccountException():

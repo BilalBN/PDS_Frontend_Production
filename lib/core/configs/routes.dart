@@ -6,10 +6,14 @@ import 'package:pds_2/features/account/data/repository/account_repository.dart';
 import 'package:pds_2/features/auth/bloc/user_login_cubit/user_login_cubit.dart';
 import 'package:pds_2/features/auth/data/repository/auth_repository.dart';
 import 'package:pds_2/features/auth/presentation/providers/auth_controllers_provider.dart';
+import 'package:pds_2/features/batch/bloc/get_batches_cubit/get_batches_cubit.dart';
 import 'package:pds_2/features/batch/bloc/listen_active_batches_bloc/listen_active_batches_bloc.dart';
 import 'package:pds_2/features/batch/bloc/listen_delete_batches_bloc/listen_delete_batches_bloc.dart';
 import 'package:pds_2/features/batch/data/repository/batch_realtime_repository.dart';
+import 'package:pds_2/features/batch/data/repository/batch_repository.dart';
 import 'package:pds_2/features/batch/presentation/providers/batches_provider.dart';
+import 'package:pds_2/features/steps/bloc/get_main_steps_cubit/get_main_steps_cubit.dart';
+import 'package:pds_2/features/steps/data/repository/steps_repository.dart';
 import 'package:pds_2/pages/account_page_widget.dart';
 import 'package:pds_2/pages/batch_main_steps_page_widget.dart';
 import 'package:pds_2/pages/batch_sub_steps_page_widget.dart';
@@ -47,8 +51,18 @@ GoRouter _router = GoRouter(
       ),
     ),
     GoRoute(
-      path: NavRoutes.batchMainStepsPage,
-      builder: (context, state) => const BatchMainStepsPageWidget(),
+      path: '${NavRoutes.batchMainStepsPage}/:productId',
+      builder: (context, state) => MultiProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                GetMainStepsCubit(serviceLocator<StepsRepository>()),
+          ),
+        ],
+        child: BatchMainStepsPageWidget(
+          productId: int.parse(state.pathParameters['productId']!),
+        ),
+      ),
     ),
     GoRoute(
       path: NavRoutes.batchSubStepsPage,
@@ -74,6 +88,10 @@ GoRouter _router = GoRouter(
       builder: (context, state) => MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => BatchesProvider()),
+          BlocProvider(
+            create: (context) =>
+                GetBatchesCubit(serviceLocator<BatchRepository>()),
+          ),
           BlocProvider(
             create: (context) => ListenActiveBatchesBloc(
               serviceLocator<BatchRealtimeRepository>(),

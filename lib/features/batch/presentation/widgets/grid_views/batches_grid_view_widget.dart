@@ -24,7 +24,9 @@ class BatchesGridViewWidget extends StatelessWidget {
         final startDate = formatDate(batch.startDate!);
         return InkWell(
           onTap: () {
-            GoRouter.of(context).push(NavRoutes.batchMainStepsPage);
+            GoRouter.of(
+              context,
+            ).push('${NavRoutes.batchMainStepsPage}/${batch.product?.id}');
           },
           splashColor: Colors.transparent,
           child: Container(
@@ -40,7 +42,7 @@ class BatchesGridViewWidget extends StatelessWidget {
               spacing: 10.0,
               children: [
                 // Batch ID
-                 Flexible(
+                Flexible(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     spacing: 10.0,

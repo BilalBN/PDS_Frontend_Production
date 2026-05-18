@@ -1,34 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pds_2/features/steps/models/main_steps_model.dart';
 import 'package:pds_2/shared/constants/nav_routes.dart';
 import 'package:pds_2/shared/widgets/icons/primary_icon_widget.dart';
 
-class BatchStepsListViewWidget extends StatefulWidget {
-  const BatchStepsListViewWidget({super.key});
-
-  @override
-  State<BatchStepsListViewWidget> createState() =>
-      _BatchStepsListViewWidgetState();
-}
-
-class _BatchStepsListViewWidgetState extends State<BatchStepsListViewWidget> {
-  late List<Map<String, dynamic>> _steps;
-
-  @override
-  void initState() {
-    super.initState();
-    _steps = List.generate(
-      9,
-      (index) => {'id': index + 1, 'step': 'Manufacturing Check'},
-    );
-  }
+class BatchStepsListViewWidget extends StatelessWidget {
+  final List<MainStepsModel> mainSteps;
+  const BatchStepsListViewWidget({super.key, required this.mainSteps});
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       itemBuilder: (context, index) {
-        final item = _steps[index];
+        final item = mainSteps[index];
         return InkWell(
           onTap: () {
             GoRouter.of(context).push(NavRoutes.batchSubStepsPage);
@@ -49,7 +34,7 @@ class _BatchStepsListViewWidgetState extends State<BatchStepsListViewWidget> {
                       const PrimaryIconWidget(Ionicons.checkmark_circle),
                       Flexible(
                         child: Text(
-                          'Step ${item['id']}: ${item['step']}',
+                          'Step ${index + 1}: ${item.name}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -64,7 +49,7 @@ class _BatchStepsListViewWidgetState extends State<BatchStepsListViewWidget> {
           ),
         );
       },
-      itemCount: _steps.length,
+      itemCount: mainSteps.length,
       padding: const EdgeInsets.only(
         left: 15.0,
         right: 15.0,

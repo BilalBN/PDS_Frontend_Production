@@ -47,3 +47,4 @@ app.*.map.json
 /lib/env/env.g.dart
 /test/helpers/isar
 libisar.so
+/test/helpers/test_jwt.dart
